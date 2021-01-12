@@ -1,6 +1,7 @@
 'use strict';
 var section = document.querySelector('section');
-const add = document.getElementById('add');
+var add = document.getElementById('add');
+var input= document.getElementById("nom").value;
 
 var requestURL = 'listtache.json';
 var request = new XMLHttpRequest();
@@ -9,81 +10,80 @@ request.responseType = 'json';
 request.send();
 request.onload = function() {
 	var listJson = request.response;
-	showList();
+    showList(listJson);
+
+    //AJOUT
+  add.addEventListener('click', event => {
+    //event.preventDefault();
+    console.log(input);
+	listJson['taches'].push({ "name": input, "etat": "A faire" });   
+    section.innerHTML= "";
+	showList(listJson);
+  });	
+    
   }
 
-var JSONfile ={
-	"taches" : [
-	  {
-		"name" : "Fifi",
-		"etat" : "à faire"
-	  },
-	  {
-		  "name" : "Loulou",
-		  "etat" : "à faire"
-		},
-		{
-		  "name" : "Toto",
-		  "etat" : "à faire"
-		}
-	]
-  };
-
-//var taches = listJson['taches'];
-var taches = JSONfile['taches'];
-
-var input= document.getElementById("nom").value;
-
 //Genere list
-  function showList() {	
-
+  function showList(objJson) {	
+    var taches = objJson['taches'];
+    
 	for (var i = 0; i < taches.length; i++) {
 	  var myArticle = document.createElement('article');
 	  var nomTache = document.createElement('h2');
 	  var etat = document.createElement('p');
+	  var form = document.createElement('form');
+	  var editnom = document.createElement('input');
+	  var submit = document.createElement('input');
 	  var supp = document.createElement('button');
 	
   
 	  nomTache.textContent = taches[i].name;
 	  etat.textContent = 'Etat: ' + taches[i].etat;
 	  supp.textContent ="X" ;
-  
-	 
+	  editnom.value = taches[i].name;
+
+	  form.classList.add("hide");
+	  editnom.setAttribute("type", "textt");
+	  submit.setAttribute("type", "submit");
+
+	 	//EDIT
+		 nomTache.addEventListener('click', event => {
+			form.classList.remove("hide");
+			nomTache.classList.add("hide");
+		  });
+
+		  submit.addEventListener('click', event => {
+			console.log(edit);
+		  });
+
 	  myArticle.appendChild(nomTache);
+	  myArticle.appendChild(form);
+	  form.appendChild(editnom);
+	  form.appendChild(submit);
 	  myArticle.appendChild(etat);
 	  myArticle.appendChild(supp);
 
 	  section.appendChild(myArticle);
 
-	  nomTache.addEventListener('click', event => {
-        console.log("modif");
-        var etat = document.createElement('form');
-	  });
+	//SUPP
+	  supp.addEventListener('click', event => {
+	
+		console.log("supp");
+		var newlist = taches.splice(1, 0);
+		console.log(newlist);
+		
+	});
 	
 	}
+
+
 	
   }
 
-//AJOUT
-  add.addEventListener('click', event => {
-	event.preventDefault();
-	console.log(input);
-	taches.push({ "name": input, "etat": "A faire" });
-    console.log(taches);
-    section.innerHTML= "";
-	showList();
-  });
-//SUPP
-  /*supp.addEventListener('click', event => {
-	console.log("supp");
-	suppElmt(1);
-  });*/
 
-  function suppElmt(x){
-	var newlist = taches.splice(x, 0);
-	console.log(newlist)
-	showList();
-}
+
+
+
 
 
 
