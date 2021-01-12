@@ -1,0 +1,16 @@
+{
+  "taches" : [
+    {
+      "name" : "Fifi",
+      "etat" : "à faire"
+    },
+    {
+        "name" : "Loulou",
+        "etat" : "à faire"
+      },
+      {
+        "name" : "Toto",
+        "etat" : "à faire"
+      }
+  ]
+}
